@@ -1,0 +1,44 @@
+# from http://kleber-swf.com/the-definitive-gitignore-for-unity-projects/
+
+.vs/
+.idea/
+JetBrains
+Assets/Plugins/Editor/JetBrains.meta
+
+# =============== #
+# Unity generated #
+# =============== #
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+[Ll]ibrary/
+sysinfo.txt
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+/*.userprefs
+/*.csproj
+/*.pidb
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+[Tt]humbs.db.meta
+*.mdb
+/bin
+/Assets/UnityVS
+*.unity3d
+.vscode/

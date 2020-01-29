@@ -1,1 +1,3 @@
--linear color space vs gamma color space. Other color spaces if exist
+-linear color space vs gamma color space
+-z-buffer or depth buffer
+-rendering pipelines: forward, deffered, ect.

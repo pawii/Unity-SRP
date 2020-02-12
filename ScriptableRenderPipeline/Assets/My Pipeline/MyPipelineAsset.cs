@@ -2,9 +2,16 @@
 using UnityEngine.Experimental.Rendering;
 
 [CreateAssetMenu(menuName = "Rendering/My Pipeline")]
-public class MyPipelineAsset : RenderPipelineAsset {
+public class MyPipelineAsset : RenderPipelineAsset 
+{
+    [SerializeField]
+    private bool dynamicBatching;
 
-	protected override IRenderPipeline InternalCreatePipeline () {
-		return new MyPipeline();
+    [SerializeField]
+    private bool instancing;
+
+    protected override IRenderPipeline InternalCreatePipeline () 
+    {
+		return new MyPipeline(dynamicBatching, instancing);
 	}
 }

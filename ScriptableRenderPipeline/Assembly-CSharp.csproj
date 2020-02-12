@@ -66,8 +66,20 @@
   <ItemGroup>
     <Compile Include="Assets\My Pipeline\MyPipeline.cs" />
     <Compile Include="Assets\My Pipeline\MyPipelineAsset.cs" />
+    <Compile Include="Assets\Scripts\InstancedColor.cs" />
+    <None Include="Assets\My Pipeline\ShaderLibrary\Unlit.hlsl" />
+    <None Include="Assets\My Pipeline\Shaders\Unlit.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>D:/Unity Projects/Unity-SRP/ScriptableRenderPipeline/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor">
+      <HintPath>D:/Unity Projects/Unity-SRP/ScriptableRenderPipeline/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>D:/Unity Projects/Unity-SRP/ScriptableRenderPipeline/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+      <HintPath>D:/Unity Projects/Unity-SRP/ScriptableRenderPipeline/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

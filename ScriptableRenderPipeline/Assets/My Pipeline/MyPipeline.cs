@@ -3,19 +3,30 @@ using UnityEngine.Rendering;
 using UnityEngine.Experimental.Rendering;
 using Conditional = System.Diagnostics.ConditionalAttribute;
 
-public class MyPipeline : RenderPipeline {
-
-	CullResults cull;
-
-	Material errorMaterial;
-
-	CommandBuffer cameraBuffer = new CommandBuffer {
+public class MyPipeline : RenderPipeline 
+{
+	private CullResults cull;
+    private Material errorMaterial;
+    private DrawRendererFlags drawFlags;
+    private CommandBuffer cameraBuffer = new CommandBuffer 
+    {
 		name = "Render Camera"
 	};
 
-	public override void Render (
-		ScriptableRenderContext renderContext, Camera[] cameras
-	) {
+    public MyPipeline(bool dynamicBatching, bool instancing)
+    {
+        if (dynamicBatching)
+        {
+            drawFlags = DrawRendererFlags.EnableDynamicBatching;
+        }
+        if (instancing)
+        {
+            drawFlags |= DrawRendererFlags.EnableInstancing;
+        }
+	}
+
+	public override void Render(ScriptableRenderContext renderContext, Camera[] cameras) 
+    {
 		base.Render(renderContext, cameras);
 
 		foreach (var camera in cameras) {
@@ -23,14 +34,17 @@ public class MyPipeline : RenderPipeline {
 		}
 	}
 
-	void Render (ScriptableRenderContext context, Camera camera) {
+	private void Render(ScriptableRenderContext context, Camera camera) 
+    {
 		ScriptableCullingParameters cullingParameters;
-		if (!CullResults.GetCullingParameters(camera, out cullingParameters)) {
+		if (!CullResults.GetCullingParameters(camera, out cullingParameters)) 
+        {
 			return;
 		}
 
 #if UNITY_EDITOR
-		if (camera.cameraType == CameraType.SceneView) {
+		if (camera.cameraType == CameraType.SceneView) 
+        {
 			ScriptableRenderContext.EmitWorldGeometryForSceneView(camera);
 		}
 #endif
@@ -50,26 +64,22 @@ public class MyPipeline : RenderPipeline {
 		context.ExecuteCommandBuffer(cameraBuffer);
 		cameraBuffer.Clear();
 
-		var drawSettings = new DrawRendererSettings(
-			camera, new ShaderPassName("SRPDefaultUnlit")
-		);
+		var drawSettings = new DrawRendererSettings(camera, new ShaderPassName("SRPDefaultUnlit"));
+        drawSettings.flags = drawFlags;
 		drawSettings.sorting.flags = SortFlags.CommonOpaque;
 
-		var filterSettings = new FilterRenderersSettings(true) {
+		var filterSettings = new FilterRenderersSettings(true) 
+        {
 			renderQueueRange = RenderQueueRange.opaque
 		};
 
-		context.DrawRenderers(
-			cull.visibleRenderers, ref drawSettings, filterSettings
-		);
+		context.DrawRenderers(cull.visibleRenderers, ref drawSettings, filterSettings);
 
 		context.DrawSkybox(camera);
 
 		drawSettings.sorting.flags = SortFlags.CommonTransparent;
 		filterSettings.renderQueueRange = RenderQueueRange.transparent;
-		context.DrawRenderers(
-			cull.visibleRenderers, ref drawSettings, filterSettings
-		);
+		context.DrawRenderers(cull.visibleRenderers, ref drawSettings, filterSettings);
 
 		DrawDefaultPipeline(context, camera);
 
@@ -82,16 +92,17 @@ public class MyPipeline : RenderPipeline {
 
 	[Conditional("DEVELOPMENT_BUILD"), Conditional("UNITY_EDITOR")]
 	void DrawDefaultPipeline (ScriptableRenderContext context, Camera camera) {
-		if (errorMaterial == null) {
+		if (errorMaterial == null) 
+        {
 			Shader errorShader = Shader.Find("Hidden/InternalErrorShader");
-			errorMaterial = new Material(errorShader) {
+			errorMaterial = new Material(errorShader) 
+            {
 				hideFlags = HideFlags.HideAndDontSave
 			};
 		}
 
-		var drawSettings = new DrawRendererSettings(
-			camera, new ShaderPassName("ForwardBase")
-		);
+		var drawSettings = new DrawRendererSettings(camera, new ShaderPassName("ForwardBase"));
+
 		drawSettings.SetShaderPassName(1, new ShaderPassName("PrepassBase"));
 		drawSettings.SetShaderPassName(2, new ShaderPassName("Always"));
 		drawSettings.SetShaderPassName(3, new ShaderPassName("Vertex"));
@@ -101,8 +112,6 @@ public class MyPipeline : RenderPipeline {
 
 		var filterSettings = new FilterRenderersSettings(true);
 
-		context.DrawRenderers(
-			cull.visibleRenderers, ref drawSettings, filterSettings
-		);
+		context.DrawRenderers(cull.visibleRenderers, ref drawSettings, filterSettings);
 	}
 }

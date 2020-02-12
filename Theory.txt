@@ -1,3 +1,4 @@
 -linear color space vs gamma color space
 -z-buffer or depth buffer
 -rendering pipelines: forward, deffered, ect.
+-shader pass, multiply pass https://www.ixbt.com/video2/terms2k5.shtml
